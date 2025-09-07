@@ -20,6 +20,9 @@ const config: Config = {
         slim: ['var(--font-slim)'],
         slimbold: ['var(--font-slimbold)']
       },
+      backgroundImage: {
+        'gradient-pink': 'linear-gradient(to bottom, #F6AAB7, white)',
+      },
       // Subtle animations
       transitionProperty: {
         'border': 'border-color',
