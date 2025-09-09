@@ -2,20 +2,20 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="bg-primary outline outline-2 outline-black py-[2vw] px-4 text-center">
-      <div className="flex justify-center items-center text-[1.5vw] md:text-[1rem]">
+    <footer className="bg-primary outline outline-2 outline-black py-4 md:py-6">
+      <div className="flex justify-center items-center font-slimbold text-sm md:text-base">
         <Link 
           href="https://www.instagram.com/thatelephantparty/" 
-          className="font-slimbold hover:underline"
+          className="text-black hover:underline px-2"
           target="_blank"
           rel="noopener noreferrer"
         >
           INSTAGRAM
         </Link>
-        <span className="mx-[0.8vw]">|</span>
+        <span className="text-black px-2">|</span>
         <Link 
           href="/contact" 
-          className="font-slimbold hover:underline"
+          className="text-black hover:underline px-2"
         >
           CONTACT
         </Link>

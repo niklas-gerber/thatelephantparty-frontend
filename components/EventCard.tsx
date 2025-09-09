@@ -1,10 +1,8 @@
-// components/EventCard.tsx
 'use client'
 
 import Image from 'next/image'
 import Link from 'next/link'
 import { type ApiEvent } from '@/lib/api'
-//import { customLoader } from '@/lib/image-loader' // Import the custom loader
 
 export default function EventCard({
   event,
@@ -18,31 +16,30 @@ export default function EventCard({
   }
 
   return (
-    <div className="font-slimbold text-black mx-auto max-w-[40vw] md:max-w-[40vw] p-[3vw] md:p-[3vw]">
-      <div className="text-center text-[2.5vw] md:text-[2.5vw] mb-[1vw]">
+    <div className="font-slimbold text-black mx-auto w-full max-w-[90vw] md:max-w-[40vw] p-4 md:p-8">
+      {/* Removed outline from event title */}
+      <div className="text-center text-xl md:text-2xl lg:text-3xl mb-2 md:mb-4 px-4 py-2 w-full mx-auto">
         {event.title}
       </div>
       
-      <Link href={`/tickets?eventId=${event.id}`}>
-        <div className="relative aspect-[3/4] w-full my-[4.5vw]">
-          <Image
-            src={event.poster_image_url}
-            alt={`Poster for ${event.title}`}
-            fill
-            className="object-cover shadow-[0_0_0_3vw_black] hover:shadow-[0_0_0_3.2vw_black] transition-shadow"
-            onContextMenu={handleContextMenu}
-            unoptimized={true}
-            //loader={customLoader} // Add the custom loader here
-          />
-        </div>
+      <Link href={`/tickets?eventId=${event.id}`} className="flex justify-center">
+        <Image
+          src={event.poster_image_url}
+          alt={`Poster for ${event.title}`}
+          width={400}
+          height={600}
+          className="block mx-auto w-full max-w-[80vw] md:max-w-[40vw] shadow-[0_0_0_2vw] md:shadow-[0_0_0_3vw] shadow-black hover:shadow-[0_0_0_2.2vw] md:hover:shadow-[0_0_0_3.2vw] transition-all duration-300 my-4 md:my-8"
+          onContextMenu={handleContextMenu}
+          unoptimized={true}
+        />
       </Link>
 
       <Link href={`/tickets?eventId=${event.id}`}>
-        <div className="text-center space-y-[0.5vw]">
-          <div className="text-[1.5vw] md:text-[1.5vw]">
+        <div className="mt-2 md:mt-4 space-y-1 md:space-y-2">
+          <div className="text-center text-base md:text-lg lg:text-xl">
             <span>{event.venue_name}</span>
           </div>
-          <div className="text-[1.5vw] md:text-[1.5vw]">
+          <div className="text-center text-base md:text-lg lg:text-xl">
             <span>{event.display_date}</span>
           </div>
         </div>

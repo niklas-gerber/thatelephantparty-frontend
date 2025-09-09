@@ -8,20 +8,22 @@ export default function Pagination({
   totalPages: number
 }) {
   return (
-    <div className="flex justify-center items-center font-slimbold text-[3vw] md:text-[1.2rem]">
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-        <Link
-          key={page}
-          href={`/?page=${page}`}
-          className={`mx-1 px-3 py-1 rounded ${
-            currentPage === page
-              ? 'bg-primary text-white'
-              : 'bg-white text-primary border border-primary hover:bg-primary hover:text-white'
-          } transition-colors`}
-        >
-          {page}
-        </Link>
-      ))}
+    <div className="pagination flex justify-center items-center py-4 md:py-8">
+      <div className="pages text-center font-slimbold text-lg md:text-xl lg:text-2xl flex flex-wrap justify-center gap-2">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <Link
+            key={page}
+            href={`/?page=${page}`}
+            className={`px-3 py-1 md:px-4 md:py-2 ${
+              currentPage === page
+                ? 'bg-[var(--color-pagination-active-bg)] text-[var(--color-pagination-active-text)]'
+                : 'bg-[var(--color-pagination-inactive-bg)] text-[var(--color-pagination-inactive-text)]'
+            }`}
+          >
+            {page}
+          </Link>
+        ))}
+      </div>
     </div>
   )
 }

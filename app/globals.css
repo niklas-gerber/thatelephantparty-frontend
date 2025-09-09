@@ -3,6 +3,35 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Design System Colors */
+  --color-primary: #55CEFD;
+  --color-gradient-from: #F6AAB7;
+  --color-gradient-to: #ffffff;
+  --color-text: #000000;
+  --color-pagination-active-bg: #059e82;
+  --color-pagination-active-text: #cc5aa2;
+  --color-pagination-inactive-bg: #cc5aa2;
+  --color-pagination-inactive-text: #5f439a;
+  --color-outline: #000000;
+}
+
+/* Self-hosted Inter fonts with better fallbacks */
+@font-face {
+  font-family: 'slim';
+  src: url('/fonts/Inter-ExtraLight.woff2') format('woff2'),
+       url('/fonts/Inter-ExtraLight.woff') format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'slimbold';
+  src: url('/fonts/Inter-Bold.woff2') format('woff2'),
+       url('/fonts/Inter-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @theme inline {
@@ -22,5 +51,55 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'slim', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Apply the custom gradient background */
+.custom-gradient-bg {
+  background-image: linear-gradient(to bottom, var(--color-gradient-from), var(--color-gradient-to));
+}
+
+/* Utility classes for the custom fonts */
+.font-slim {
+  font-family: 'slim', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 200;
+}
+
+.font-slimbold {
+  font-family: 'slimbold', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 700;
+}
+
+/* Ensure header and footer use the primary color */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.text-text {
+  color: var(--color-text);
+}
+
+.outline-outline {
+  outline-color: var(--color-outline);
+}
+
+
+.text-black {
+  color: var(--color-text);
+}
+
+.bg-pagination-active-bg {
+  background-color: var(--color-pagination-active-bg);
+}
+
+.text-pagination-active-text {
+  color: var(--color-pagination-active-text);
+}
+
+.bg-pagination-inactive-bg {
+  background-color: var(--color-pagination-inactive-bg);
+}
+
+.text-pagination-inactive-text {
+  color: var(--color-pagination-inactive-text);
 }

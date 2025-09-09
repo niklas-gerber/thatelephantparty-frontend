@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-slim min-h-screen grid grid-rows-[auto_1fr_auto] bg-gradient-to-b from-[#F6AAB7] to-white">
+      <body className="font-slim min-h-screen grid grid-rows-[auto_1fr_auto] custom-gradient-bg">
         <Header />
         <main>{children}</main>
         <Footer />

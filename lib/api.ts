@@ -34,3 +34,27 @@ export async function fetchPublicEvents(): Promise<ApiEvent[]> {
     return [];
   }
 }
+
+
+export interface PageContent {
+  id: number;
+  name: string;
+  content: string;
+  lastUpdated: string;
+}
+
+export async function fetchPageContent(pageName: string): Promise<PageContent | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/v1/public/pages/${pageName}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const pageContent: PageContent = await response.json();
+    return pageContent;
+  } catch (error) {
+    console.error(`Failed to fetch ${pageName} page content:`, error);
+    return null;
+  }
+}

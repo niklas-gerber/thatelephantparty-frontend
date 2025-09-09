@@ -1,40 +1,25 @@
-import type { Config } from 'tailwindcss'
-
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   content: [
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}'
   ],
   theme: {
     extend: {
       colors: {
-        // Your exact color scheme
-        primary: '#55CEFD', // Header/footer blue
-        secondary: '#F6AAB7', // Pink gradient
-        accent: '#042546', // Dark blue text
-        error: '#cc5aa2', // Error pink
-        success: '#059e82' // Success green
+        primary: 'var(--color-primary)',
+        'pagination-active-bg': 'var(--color-pagination-active-bg)',
+        'pagination-active-text': 'var(--color-pagination-active-text)',
+        'pagination-inactive-bg': 'var(--color-pagination-inactive-bg)',
+        'pagination-inactive-text': 'var(--color-pagination-inactive-text)',
+        outline: 'var(--color-outline)',
       },
       fontFamily: {
-        // Will be defined in globals.css
-        slim: ['var(--font-slim)'],
-        slimbold: ['var(--font-slimbold)']
+        slim: ['slim', 'sans-serif'],
+        slimbold: ['slimbold', 'sans-serif'],
       },
-      backgroundImage: {
-        'gradient-pink': 'linear-gradient(to bottom, #F6AAB7, white)',
-      },
-      // Subtle animations
-      transitionProperty: {
-        'border': 'border-color',
-        'shadow': 'box-shadow'
-      }
-    }
+    },
   },
-  plugins: [
-    // Native Tailwind plugins (no extras)
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/forms')
-  ]
+  plugins: [],
 }
-
-export default config

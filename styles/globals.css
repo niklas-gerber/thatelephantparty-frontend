@@ -1,52 +1,60 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Font faces - same as your original but modernized */
-@font-face {
-  font-family: 'slim';
-  src: url('/Inter-ExtraLight.woff') format('woff');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap; /* Better performance */
-}
-
-@font-face {
-  font-family: 'slimbold';
-  src: url('/Inter-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;700&display=swap');
 
 :root {
-  --font-slim: 'slim', sans-serif;
-  --font-slimbold: 'slimbold', sans-serif;
+  --background: #ffffff;
+  --foreground: #171717;
+  /* Design System Colors */
+  --color-primary: #55CEFD;
+  --color-gradient-from: #F6AAB7;
+  --color-gradient-to: #ffffff;
+  --color-text: #000000;
+  --color-pagination-active-bg: #059e82;
+  --color-pagination-active-text: #cc5aa2;
+  --color-pagination-inactive-bg: #cc5aa2;
+  --color-pagination-inactive-text: #5f439a;
+  --color-outline: #000000;
+  /* Font Families */
+  --font-slim: 'Inter', sans-serif;
+  /* Using Google Fonts Inter with 200 weight for slim */
+  --font-slimbold: 'Inter', sans-serif;
+  /* Using Google Fonts Inter with 700 weight for slimbold */
 }
 
-/* Base styles - preserves your gradient background */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
 body {
-  @apply bg-gradient-pink;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Focus states - subtle but accessible */
-[type="text"]:focus, 
-[type="email"]:focus, 
-select:focus, 
-textarea:focus {
-  @apply ring-2 ring-primary outline-none;
+/* Apply the custom gradient background */
+.custom-gradient-bg {
+  background-image: linear-gradient(to bottom, var(--color-gradient-from), var(--color-gradient-to));
 }
 
-/* Loading animation - similar to your dots but modernized */
-.loading:after {
-  @apply inline-block overflow-hidden align-bottom;
-  animation: dots 1s steps(4, end) infinite;
-  content: " .";
-  width: 1em;
+/* Utility classes for the custom fonts */
+.font-slim {
+  font-family: var(--font-slim);
+  font-weight: 200;
+  /* Inter ExtraLight */
 }
-@keyframes dots {
-  0%, 20% { color: transparent; text-shadow: .25em 0 0 transparent, .5em 0 0 transparent; }
-  40% { color: currentColor; text-shadow: .25em 0 0 transparent, .5em 0 0 transparent; }
-  60% { text-shadow: .25em 0 0 currentColor, .5em 0 0 transparent; }
-  80%, 100% { text-shadow: .25em 0 0 currentColor, .5em 0 0 currentColor; }
+
+.font-slimbold {
+  font-family: var(--font-slimbold);
+  font-weight: 700;
+  /* Inter Bold */
 }
