@@ -13,7 +13,6 @@ COPY . .
 
 ENV NODE_ENV=development
 ENV CHOKIDAR_USEPOLLING=true
-ENV NEXT_PUBLIC_BACKEND_URL=http://backend:3001
 
 EXPOSE 3000
 CMD ["npm", "run", "dev"]
