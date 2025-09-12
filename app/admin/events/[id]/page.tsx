@@ -56,9 +56,9 @@ export default function EventDetailPage() {
   useEffect(() => {
     if (showEditSection && editSectionRef.current) {
       setTimeout(() => {
-        editSectionRef.current?.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
+        editSectionRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
         });
       }, 100);
     }
@@ -68,9 +68,9 @@ export default function EventDetailPage() {
   useEffect(() => {
     if (posterPreview && posterPreviewRef.current) {
       setTimeout(() => {
-        posterPreviewRef.current?.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
+        posterPreviewRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
         });
       }, 100);
     }
@@ -81,21 +81,21 @@ export default function EventDetailPage() {
       try {
         setIsLoading(true);
         const response = await authFetch(`/api/v1/admin/events/${eventId}`);
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const eventData: Event = await response.json();
         setEvent(eventData);
-        
+
         // Initialize form data but exclude read-only fields
         const { id, sold_tickets, walk_in_cash_count, walk_in_gcash_count, ...editableData } = eventData;
         setFormData(editableData);
-        
+
       } catch (err: any) {
         console.error('Event fetch failed:', err);
-        
+
         if (err.message.includes('401') || err.message.includes('Authentication failed')) {
           setError('Authentication required. Redirecting to login...');
           router.push('/admin/login');
@@ -137,7 +137,7 @@ export default function EventDetailPage() {
 
     try {
       const formDataToSend = new FormData();
-      
+
       // Add only editable fields (exclude read-only fields)
       Object.entries(formData).forEach(([key, value]) => {
         if (value !== null && value !== undefined) {
@@ -167,15 +167,15 @@ export default function EventDetailPage() {
 
       const updatedEvent = await response.json();
       setEvent(updatedEvent);
-      
+
       // Update form data but exclude read-only fields
       const { id, sold_tickets, walk_in_cash_count, walk_in_gcash_count, ...editableData } = updatedEvent;
       setFormData(editableData);
-      
+
       setSuccess('Event updated successfully!');
       setPosterFile(null);
       setPosterPreview(null);
-      
+
     } catch (err: any) {
       console.error('Event update failed:', err);
       setError(err.message || 'Failed to update event. Please try again.');
@@ -196,7 +196,7 @@ export default function EventDetailPage() {
 
       router.push('/admin');
       router.refresh();
-      
+
     } catch (err: any) {
       console.error('Event deletion failed:', err);
       setError('Failed to delete event. Please try again.');
@@ -222,13 +222,13 @@ export default function EventDetailPage() {
 
       const updatedEvent = await response.json();
       setEvent(updatedEvent);
-      
+
       // Update form data but exclude read-only fields
       const { id, sold_tickets, walk_in_cash_count, walk_in_gcash_count, ...editableData } = updatedEvent;
       setFormData(editableData);
-      
+
       setSuccess(`Event ${updatedEvent.is_active ? 'activated' : 'deactivated'} successfully!`);
-      
+
     } catch (err: any) {
       console.error('Status toggle failed:', err);
       setError('Failed to update event status. Please try again.');
@@ -269,7 +269,7 @@ export default function EventDetailPage() {
     <div className="p-8 custom-gradient-bg min-h-screen">
       {/* Header Navigation */}
       <div className="flex items-center mb-6">
-        <Link 
+        <Link
           href="/admin"
           className="bg-[var(--color-primary)] hover:bg-[#45B8E5] text-black font-medium py-2 px-4 rounded-lg shadow-md transition-colors border border-black mr-4"
         >
@@ -296,8 +296,8 @@ export default function EventDetailPage() {
           {/* Poster Image - Larger size */}
           {event.poster_image_url && (
             <div className="flex-shrink-0 w-full md:w-1/4">
-              <img 
-                src={event.poster_image_url} 
+              <img
+                src={event.poster_image_url}
                 alt={event.title}
                 className="w-full h-auto max-w-xs object-contain rounded-lg border"
               />
@@ -331,14 +331,13 @@ export default function EventDetailPage() {
         {/* Status and Actions */}
         <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-gray-200">
           <div className="flex items-center gap-4">
-            <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-              event.is_active 
-                ? 'bg-green-100 text-green-800' 
+            <span className={`px-3 py-1 rounded-full text-sm font-medium ${event.is_active
+                ? 'bg-green-100 text-green-800'
                 : 'bg-gray-100 text-gray-800'
-            }`}>
+              }`}>
               {event.is_active ? 'Active' : 'Inactive'}
             </span>
-            
+
             <button
               onClick={toggleActiveStatus}
               className="bg-[var(--color-primary)] hover:bg-[#45B8E5] text-black font-medium py-1 px-3 rounded transition-colors border border-black text-sm"
@@ -361,6 +360,13 @@ export default function EventDetailPage() {
               className="bg-[var(--color-primary)] hover:bg-[#45B8E5] text-black font-medium py-1 px-3 rounded transition-colors border border-black text-sm"
             >
               Door Management
+            </Link>
+
+            <Link
+              href={`/admin/events/${eventId}/downloads`}
+              className="bg-[var(--color-primary)] hover:bg-[#45B8E5] text-black font-medium py-1 px-3 rounded transition-colors border border-black text-sm"
+            >
+              Download Reports
             </Link>
 
             <button
@@ -390,7 +396,7 @@ export default function EventDetailPage() {
               {/* Basic Information */}
               <div className="space-y-4">
                 <h3 className="text-lg font-slimbold text-[var(--color-primary)]">Basic Information</h3>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
                   <input
@@ -467,7 +473,7 @@ export default function EventDetailPage() {
               {/* Ticket Information */}
               <div className="space-y-4">
                 <h3 className="text-lg font-slimbold text-[var(--color-primary)]">Ticket Information</h3>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Regular Price (₱) *</label>
                   <input
@@ -588,7 +594,7 @@ export default function EventDetailPage() {
             {/* Poster Upload */}
             <div className="space-y-4">
               <h3 className="text-lg font-slimbold text-[var(--color-primary)]">Poster Image</h3>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Upload New Poster</label>
                 <input
@@ -602,8 +608,8 @@ export default function EventDetailPage() {
               {(posterPreview || event.poster_image_url) && (
                 <div ref={posterPreviewRef} className="mt-4">
                   <p className="text-sm font-medium text-gray-700 mb-2">Poster Preview:</p>
-                  <img 
-                    src={posterPreview || event.poster_image_url} 
+                  <img
+                    src={posterPreview || event.poster_image_url}
                     alt="Poster preview"
                     className="w-48 h-48 object-contain border rounded-md"
                   />
