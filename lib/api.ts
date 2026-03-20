@@ -58,3 +58,28 @@ export async function fetchPageContent(pageName: string): Promise<PageContent | 
     return null;
   }
 }
+
+export async function fetchPublicEvent(id: string): Promise<ApiEvent | null> {
+  try {
+    // Determine URL based on execution context
+    const url = typeof window !== 'undefined' 
+      ? `http://localhost:3001/api/v1/public/events/${id}`
+      : `${API_BASE_URL}/api/v1/public/events/${id}`;
+    
+    const response = await fetch(url, {
+      cache: 'no-store'
+    });
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+      throw new Error('Failed to fetch event');
+    }
+    
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching event:', error);
+    return null;
+  }
+}

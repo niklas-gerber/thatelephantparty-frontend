@@ -22,7 +22,7 @@ export default function EventCard({
         {event.title}
       </div>
       
-      <Link href={`/tickets?eventId=${event.id}`} className="flex justify-center">
+      <Link href={`/events/${event.id}`} className="flex justify-center">
         <Image
           src={event.poster_image_url}
           alt={`Poster for ${event.title}`}
@@ -34,7 +34,7 @@ export default function EventCard({
         />
       </Link>
 
-      <Link href={`/tickets?eventId=${event.id}`}>
+      <Link href={`/events/${event.id}`}>
         <div className="mt-2 md:mt-4 space-y-1 md:space-y-2">
           <div className="text-center text-base md:text-lg lg:text-xl">
             <span>{event.venue_name}</span>

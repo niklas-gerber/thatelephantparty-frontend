@@ -76,41 +76,41 @@ export default function EventDetailPage() {
     }
   }, [posterPreview]);
 
-  useEffect(() => {
-    const fetchEventData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await authFetch(`/api/v1/admin/events/${eventId}`);
+useEffect(() => {
+  const fetchEventData = async () => {
+    try {
+      setIsLoading(true);
+      const response = await authFetch(`/api/v1/admin/events/${eventId}`);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const eventData: Event = await response.json();
-        setEvent(eventData);
-
-        // Initialize form data but exclude read-only fields
-        const { id, sold_tickets, walk_in_cash_count, walk_in_gcash_count, ...editableData } = eventData;
-        setFormData(editableData);
-
-      } catch (err: any) {
-        console.error('Event fetch failed:', err);
-
-        if (err.message.includes('401') || err.message.includes('Authentication failed')) {
-          setError('Authentication required. Redirecting to login...');
-          router.push('/admin/login');
-        } else if (err.message.includes('404')) {
-          setError('Event not found');
-        } else {
-          setError('Failed to load event data. Please try again later.');
-        }
-      } finally {
-        setIsLoading(false);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
 
-    fetchEventData();
-  }, [eventId, router]);
+      const eventData: Event = await response.json();
+      setEvent(eventData);
+
+      // Initialize form data but exclude read-only fields
+      const { id, sold_tickets, walk_in_cash_count, walk_in_gcash_count, ...editableData } = eventData;
+      
+      // Ensure proper formatting for comparison
+      const formattedData = {
+        ...editableData,
+        start_date: editableData.start_date ? new Date(editableData.start_date).toISOString().split('T')[0] : '',
+        ticket_deadline: editableData.ticket_deadline ? new Date(editableData.ticket_deadline).toISOString() : ''
+      };
+      
+      setFormData(formattedData);
+
+    } catch (err: any) {
+      console.error('Event fetch failed:', err);
+      // ... rest of error handling
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchEventData();
+}, [eventId, router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -130,16 +130,18 @@ export default function EventDetailPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError(null);
-    setSuccess(null);
+  e.preventDefault();
+  setIsSubmitting(true);
+  setError(null);
+  setSuccess(null);
 
-    try {
-      const formDataToSend = new FormData();
+  try {
+    const formDataToSend = new FormData();
 
-      // Add only editable fields (exclude read-only fields)
-      Object.entries(formData).forEach(([key, value]) => {
+    // Only add fields that have been changed from the original event data
+    Object.entries(formData).forEach(([key, value]) => {
+      // Skip if value hasn't changed from original event
+      if (event && value !== event[key as keyof Event]) {
         if (value !== null && value !== undefined) {
           // Convert empty strings to null for numeric fields that can be null
           if ((key === 'bundle_size' || key === 'ticket_price_bundle') && value === '') {
@@ -148,41 +150,49 @@ export default function EventDetailPage() {
             formDataToSend.append(key, value.toString());
           }
         }
-      });
-
-      // Add poster file if selected
-      if (posterFile) {
-        formDataToSend.append('poster', posterFile);
       }
+    });
 
-      const response = await authFetch(`/api/v1/admin/events/${eventId}`, {
-        method: 'PATCH',
-        body: formDataToSend,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        throw new Error(`Server returned ${response.status}: ${errorData}`);
-      }
-
-      const updatedEvent = await response.json();
-      setEvent(updatedEvent);
-
-      // Update form data but exclude read-only fields
-      const { id, sold_tickets, walk_in_cash_count, walk_in_gcash_count, ...editableData } = updatedEvent;
-      setFormData(editableData);
-
-      setSuccess('Event updated successfully!');
-      setPosterFile(null);
-      setPosterPreview(null);
-
-    } catch (err: any) {
-      console.error('Event update failed:', err);
-      setError(err.message || 'Failed to update event. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+    // Add poster file if selected (always send if new file is selected)
+    if (posterFile) {
+      formDataToSend.append('poster', posterFile);
     }
-  };
+
+    // If no fields were changed and no file uploaded, show message and return
+    if (formDataToSend.entries().next().done && !posterFile) {
+      setSuccess('No changes detected.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    const response = await authFetch(`/api/v1/admin/events/${eventId}`, {
+      method: 'PATCH',
+      body: formDataToSend,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      throw new Error(`Server returned ${response.status}: ${errorData}`);
+    }
+
+    const updatedEvent = await response.json();
+    setEvent(updatedEvent);
+
+    // Update form data but exclude read-only fields
+    const { id, sold_tickets, walk_in_cash_count, walk_in_gcash_count, ...editableData } = updatedEvent;
+    setFormData(editableData);
+
+    setSuccess('Event updated successfully!');
+    setPosterFile(null);
+    setPosterPreview(null);
+
+  } catch (err: any) {
+    console.error('Event update failed:', err);
+    setError(err.message || 'Failed to update event. Please try again.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const handleDelete = async () => {
     try {

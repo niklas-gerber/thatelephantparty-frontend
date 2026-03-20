@@ -1,24 +1,27 @@
 // app/page.tsx
 import { Suspense } from 'react'
-import EventCardWrapper from '@/components/EventCardWrapper'
+import EventCard from '@/components/EventCard'
 import Pagination from '@/components/Pagination'
 import { fetchPublicEvents, type ApiEvent } from '@/lib/api'
 
 export const revalidate = 3000
 
 // Helper function to categorize and sort events
+// Helper function to categorize and sort events
 function processEvents(events: ApiEvent[]) {
   const now = new Date()
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()) // Today at midnight
+  // Create today's date in local time at midnight
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
   
   const upcomingEvents: ApiEvent[] = []
   const pastEvents: ApiEvent[] = []
   
   events.forEach(event => {
+    // Parse event date and create date-only comparison
     const eventDate = new Date(event.start_date)
-    // Compare dates without time component
     const eventDateOnly = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate())
     
+    // Compare dates (both are now timezone-agnostic date-only values)
     if (eventDateOnly >= today) {
       upcomingEvents.push(event)
     } else {
@@ -26,11 +29,19 @@ function processEvents(events: ApiEvent[]) {
     }
   })
   
-  // Sort upcoming events: soonest first
-  upcomingEvents.sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
+  // Sort upcoming events: soonest first (fix the date parsing)
+  upcomingEvents.sort((a, b) => {
+    const dateA = new Date(a.start_date).getTime()
+    const dateB = new Date(b.start_date).getTime()
+    return dateA - dateB
+  })
   
   // Sort past events: most recent first
-  pastEvents.sort((a, b) => new Date(b.start_date).getTime() - new Date(a.start_date).getTime())
+  pastEvents.sort((a, b) => {
+    const dateA = new Date(a.start_date).getTime()
+    const dateB = new Date(b.start_date).getTime()
+    return dateB - dateA // Reverse order for past events
+  })
   
   return { upcomingEvents, pastEvents }
 }
@@ -61,7 +72,7 @@ async function EventsList({ page }: { page: number }) {
               </div>
               
               {upcomingEvents.slice(0, 1).map(event => (
-                <EventCardWrapper key={event.id} event={event} isUpcoming />
+                <EventCard key={event.id} event={event} isUpcoming />
               ))}
             </>
           )}
@@ -81,7 +92,7 @@ async function EventsList({ page }: { page: number }) {
             return null
           }
           
-          return <EventCardWrapper key={event.id} event={event} />
+          return <EventCard key={event.id} event={event} />
         })}
       </div>
 
