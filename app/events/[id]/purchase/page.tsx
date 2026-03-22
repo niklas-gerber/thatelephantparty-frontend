@@ -321,7 +321,7 @@ export default function TicketPurchasePage() {
         }
         
         setFormErrors(parsedErrors)
-        throw new Error(errorMessage)
+        return // <- Beendet den Vorgang sanft, Next.js stürzt nicht ab, Inline-Fehler werden angezeigt
       }
       
       // Success - clear saved form data and redirect to thank you page
@@ -376,9 +376,9 @@ export default function TicketPurchasePage() {
     return (
       <div className="min-h-screen custom-gradient-bg p-8 flex flex-col items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full">
-          <h2 className="text-2xl font-slimbold text-center mb-6">ELEPHANT HAUS RULES</h2>
+          <h2 className="text-2xl font-slimbold text-center mb-6 text-black">ELEPHANT HAUS RULES</h2>
           
-          <div className="prose max-w-none mb-6">
+          <div className="prose prose-p:text-black prose-headings:text-black prose-li:text-black prose-strong:text-black max-w-none mb-6 text-black">
             <p className="mb-4">
               Before you Buy a Ticket, please read our House Rules carefully
             </p>
@@ -468,7 +468,7 @@ export default function TicketPurchasePage() {
           alt={`Poster for ${event.title}`}
           width={300}
           height={450}
-          className="w-full max-w-[60vw] md:max-w-[30vw] shadow-[0_0_0_2vw] md:shadow-[0_0_0_3vw] shadow-black"
+          className="w-full max-w-[60vw] md:max-w-[30vw] border-[1vw] md:border-[1.5vw] border-black"
           unoptimized={true}
         />
       </div>
@@ -492,7 +492,7 @@ export default function TicketPurchasePage() {
               name="quantity"
               value={formData.quantity}
               onChange={handleQuantityChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-black"
+              className="w-full px-4 py-2 border-2 border-gray-400 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-black"
             >
               {[...Array(10)].map((_, i) => (
                 <option key={i + 1} value={i + 1}>
@@ -503,7 +503,7 @@ export default function TicketPurchasePage() {
           </div>
 
           {/* Pricing Information */}
-          <div className="bg-[var(--color-primary)]/20 p-4 rounded-lg">
+          <div className="bg-[var(--color-primary)]/20 p-4 rounded-lg text-black">
             <div className="text-center">
               <p className="text-lg font-medium">Total Amount Due:</p>
               <p className="text-2xl font-bold">₱{calculateTotalPrice()}</p>
@@ -518,7 +518,7 @@ export default function TicketPurchasePage() {
           {/* Payment Instructions */}
           <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
             <h3 className="font-medium text-black mb-2">Payment Instructions:</h3>
-            <ol className="list-decimal list-inside space-y-1 text-sm">
+            <ol className="list-decimal list-inside space-y-1 text-sm text-black">
               <li>Send <strong>₱{calculateTotalPrice()}</strong> via GCash to <strong>09564696479 - Lance M****** N.</strong></li>
               <li>Take a screenshot of your payment confirmation</li>
               <li>Enter your reference number and upload the screenshot below</li>
@@ -680,6 +680,19 @@ export default function TicketPurchasePage() {
             </button>
           </div>
         </form>
+
+        {/* Loading Overlay während des Formular-Submits */}
+      {isSubmitting && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-white p-8 rounded-lg shadow-2xl flex flex-col items-center max-w-sm w-[90%] text-center">
+            {/* Simple CSS Spinner */}
+            <div className="w-16 h-16 border-4 border-gray-200 border-t-[var(--color-primary)] rounded-full animate-spin mb-6"></div>
+            <h3 className="text-xl font-slimbold text-black mb-2">Processing Purchase</h3>
+            <p className="text-gray-600">Please wait while we upload your payslip and secure your tickets...</p>
+          </div>
+        </div>
+      )}
+
       </div>
     </div>
   )

@@ -28,14 +28,14 @@ export default function MerchPage() {
             alt="Merchandise 1"
             width={400}
             height={500}
-            className="block mx-auto w-full max-w-[80vw] md:max-w-[40vw] shadow-[0_0_0_2vw] md:shadow-[0_0_0_3vw] shadow-black"
+            className="block mx-auto w-full max-w-[80vw] md:max-w-[40vw] border-[1vw] md:border-[1.5vw] border-black"
           />
           <Image
             src="/images/merch/merch2.jpg"
             alt="Merchandise 2"
             width={400}
             height={500}
-            className="block mx-auto w-full max-w-[80vw] md:max-w-[40vw] shadow-[0_0_0_2vw] md:shadow-[0_0_0_3vw] shadow-black mt-4 md:mt-0"
+            className="block mx-auto w-full max-w-[80vw] md:max-w-[40vw] border-[1vw] md:border-[1.5vw] border-black mt-4 md:mt-0"
           />
         </div>
         

@@ -107,7 +107,7 @@ export default function EventDetailPage() {
           alt={`Poster for ${event.title}`}
           width={400}
           height={600}
-          className="w-full max-w-[80vw] md:max-w-[40vw] shadow-[0_0_0_2vw] md:shadow-[0_0_0_3vw] shadow-black"
+          className="w-full max-w-[80vw] md:max-w-[40vw] border-[1vw] md:border-[1.5vw] border-black"
           unoptimized={true}
         />
       </div>

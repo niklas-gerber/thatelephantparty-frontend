@@ -76,7 +76,7 @@ export default function FeaturesPage() {
                             alt={feature.title}
                             width={600}
                             height={400}
-                            className="block mx-auto w-full max-w-[80vw] md:max-w-[40vw] shadow-[0_0_0_2vw] md:shadow-[0_0_0_3vw] shadow-black hover:shadow-[0_0_0_2.2vw] md:hover:shadow-[0_0_0_3.2vw] transition-all duration-300 my-4 md:my-8"
+                            className="block mx-auto w-full max-w-[80vw] md:max-w-[40vw] border-[1vw] md:border-[1.5vw] border-black hover:shadow-[0_0_0_2.2vw] md:hover:shadow-[0_0_0_3.2vw] transition-all duration-300 my-4 md:my-8"
                         />
                     </Link>
             </div>
