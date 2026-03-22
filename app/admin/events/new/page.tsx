@@ -115,7 +115,7 @@ formDataToSend.append('inactive_message', latestEvent?.inactive_message || 'This
     if (defaultPosterResponse.ok) {
       const blob = await defaultPosterResponse.blob();
       const file = new File([blob], 'default-poster.jpg', { type: 'image/jpeg' });
-      formDataToSend.append('poster', file);
+      formDataToSend.append('file', file);
     }
 
     const response = await authFetch('/api/v1/admin/events', {

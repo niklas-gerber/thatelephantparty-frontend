@@ -98,7 +98,7 @@ export default function TicketDashboardPage() {
                 setIsLoading(true);
 
                 // Fetch event data
-                const eventResponse = await authFetch(`/api/v1/admin/events/${eventId}`);
+                const eventResponse = await authFetch(`/admin/events/${eventId}`);
                 if (!eventResponse.ok) {
                     if (eventResponse.status === 401) {
                         router.push('/admin/login');
@@ -110,7 +110,7 @@ export default function TicketDashboardPage() {
                 setEvent(eventData);
 
                 // Fetch all tickets
-                const ticketsResponse = await authFetch('/api/v1/admin/tickets');
+                const ticketsResponse = await authFetch('/admin/tickets');
                 if (!ticketsResponse.ok) {
                     if (ticketsResponse.status === 401) {
                         router.push('/admin/login');
@@ -415,7 +415,7 @@ const addAttendee = () => {
                     formDataToSend.append('payslip', payslipFile);
                 }
 
-                const response = await authFetch(`/api/v1/admin/tickets/${editingTicketId}`, {
+                const response = await authFetch(`/admin/tickets/${editingTicketId}`, {
                     method: 'PATCH',
                     body: formDataToSend,
                 });
@@ -443,7 +443,7 @@ const addAttendee = () => {
 
 
                 // Refresh data
-                const ticketsResponse = await authFetch('/api/v1/admin/tickets');
+                const ticketsResponse = await authFetch('/admin/tickets');
                 if (!ticketsResponse.ok) throw new Error('Failed to fetch updated tickets');
                 const allTickets: Ticket[] = await ticketsResponse.json();
                 const eventTickets = allTickets.filter(ticket => ticket.event_id === parseInt(eventId));
@@ -474,7 +474,7 @@ const addAttendee = () => {
 
                 formDataToSend.append('payslip', payslipFile);
 
-                const response = await authFetch('/api/v1/admin/tickets', {
+                const response = await authFetch('/admin/tickets', {
                     method: 'POST',
                     body: formDataToSend,
                 });
@@ -500,7 +500,7 @@ const addAttendee = () => {
                 }
 
                 // Refresh data
-                const ticketsResponse = await authFetch('/api/v1/admin/tickets');
+                const ticketsResponse = await authFetch('/admin/tickets');
                 if (!ticketsResponse.ok) throw new Error('Failed to fetch updated tickets');
                 const allTickets: Ticket[] = await ticketsResponse.json();
                 const eventTickets = allTickets.filter(ticket => ticket.event_id === parseInt(eventId));
@@ -530,7 +530,7 @@ const addAttendee = () => {
 
     const handleDelete = async (ticketId: number) => {
         try {
-            const response = await authFetch(`/api/v1/admin/tickets/${ticketId}`, {
+            const response = await authFetch(`/admin/tickets/${ticketId}`, {
                 method: 'DELETE',
             });
 

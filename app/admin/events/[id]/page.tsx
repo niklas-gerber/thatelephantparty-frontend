@@ -80,7 +80,7 @@ useEffect(() => {
   const fetchEventData = async () => {
     try {
       setIsLoading(true);
-      const response = await authFetch(`/api/v1/admin/events/${eventId}`);
+      const response = await authFetch(`/admin/events/${eventId}`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -155,7 +155,7 @@ useEffect(() => {
 
     // Add poster file if selected (always send if new file is selected)
     if (posterFile) {
-      formDataToSend.append('poster', posterFile);
+      formDataToSend.append('file', posterFile);
     }
 
     // If no fields were changed and no file uploaded, show message and return
@@ -165,7 +165,7 @@ useEffect(() => {
       return;
     }
 
-    const response = await authFetch(`/api/v1/admin/events/${eventId}`, {
+    const response = await authFetch(`/admin/events/${eventId}`, {
       method: 'PATCH',
       body: formDataToSend,
     });
@@ -196,7 +196,7 @@ useEffect(() => {
 
   const handleDelete = async () => {
     try {
-      const response = await authFetch(`/api/v1/admin/events/${eventId}`, {
+      const response = await authFetch(`/admin/events/${eventId}`, {
         method: 'DELETE',
       });
 
@@ -216,7 +216,7 @@ useEffect(() => {
 
   const toggleActiveStatus = async () => {
     try {
-      const response = await authFetch(`/api/v1/admin/events/${eventId}`, {
+      const response = await authFetch(`/admin/events/${eventId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

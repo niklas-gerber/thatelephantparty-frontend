@@ -6,15 +6,27 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'backend',
-        port: '3001',
+        hostname: 'localhost',
+        port: '3000', // Korrigiert von 3001 auf 3000
         pathname: '/posters/**',
       },
       {
         protocol: 'http',
         hostname: 'localhost',
-        port: '3001',
+        port: '3000', // Korrigiert von 3001 auf 3000
+        pathname: '/uploads/**', // Hinzugefügt für Payslips
+      },
+      {
+        protocol: 'http',
+        hostname: 'backend',
+        port: '3000',
         pathname: '/posters/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'backend',
+        port: '3000',
+        pathname: '/uploads/**',
       },
     ],
   },

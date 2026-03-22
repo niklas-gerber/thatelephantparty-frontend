@@ -28,7 +28,7 @@ export default function EventDownloadsPage() {
     const fetchEventData = async () => {
       try {
         setIsLoading(true);
-        const response = await authFetch(`/api/v1/admin/events/${eventId}`);
+        const response = await authFetch(`/admin/events/${eventId}`);
         
         if (!response.ok) {
           if (response.status === 401) {
@@ -65,7 +65,7 @@ export default function EventDownloadsPage() {
       setIsDownloading(filename);
       setError(null);
 
-      const response = await authFetch(`/api/v1/admin/events/${eventId}/${endpoint}`);
+      const response = await authFetch(`/admin/events/${eventId}/${endpoint}`);
       
       if (!response.ok) {
         if (response.status === 401) {

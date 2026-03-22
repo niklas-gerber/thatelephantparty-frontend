@@ -48,7 +48,7 @@ export default function DoorManagementPage() {
                 setError(null);
 
                 // Fetch event data
-                const eventResponse = await authFetch(`/api/v1/admin/events/${eventId}`);
+                const eventResponse = await authFetch(`/admin/events/${eventId}`);
                 if (!eventResponse.ok) {
                     if (eventResponse.status === 401) {
                         setError('Authentication required. Redirecting to login...');
@@ -61,7 +61,7 @@ export default function DoorManagementPage() {
                 setEvent(eventData);
 
                 // Fetch all attendees
-                const attendeesResponse = await authFetch(`/api/v1/admin/events/${eventId}/attendees`);
+                const attendeesResponse = await authFetch(`/admin/events/${eventId}/attendees`);
                 if (!attendeesResponse.ok) {
                     if (attendeesResponse.status === 401) {
                         setError('Authentication required. Redirecting to login...');
@@ -126,7 +126,7 @@ export default function DoorManagementPage() {
             setError(null);
             setSuccess(null);
 
-            const response = await authFetch(`/api/v1/admin/attendees/${attendeeId}/check-in`, {
+            const response = await authFetch(`/admin/attendees/${attendeeId}/check-in`, {
                 method: 'PATCH',
             });
 
@@ -167,7 +167,7 @@ export default function DoorManagementPage() {
             setError(null);
             setSuccess(null);
 
-            const response = await authFetch(`/api/v1/admin/events/${eventId}/walk-ins/increment`, {
+            const response = await authFetch(`/admin/events/${eventId}/walk-ins/increment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ export default function DoorManagementPage() {
             setError(null);
             setSuccess(null);
 
-            const response = await authFetch(`/api/v1/admin/events/${eventId}/walk-ins/decrement`, {
+            const response = await authFetch(`/admin/events/${eventId}/walk-ins/decrement`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

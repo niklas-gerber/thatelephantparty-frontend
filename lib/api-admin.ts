@@ -1,5 +1,5 @@
 // lib/api-admin.ts
-const API_BASE_URL = 'http://localhost:3001' //process.env.NEXT_PUBLIC_BACKEND_URL; // Use the environment variable
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1'; // Environment variable with fallback
 
 async function authFetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
   // Construct the full URL using the environment variable

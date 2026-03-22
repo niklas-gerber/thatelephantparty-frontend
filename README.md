@@ -29,14 +29,14 @@ This frontend provides the public interface for viewing events, purchasing ticke
 3.  **Configure environment**
     Copy the `.env.local.example` file to `.env.local` and update the variables to point to your backend API:
     ```
-    NEXT_PUBLIC_API_BASE_URL=http://localhost:3001
+    NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
     ```
 
 4.  **Run the development server**
     ```bash
     npm run dev
     ```
-    Open [http://localhost:3000](http://localhost:3000) in your browser.
+    Open [http://localhost:3000](http://localhost:3001) in your browser.
 
 5.  **For production with Docker**
     ```bash

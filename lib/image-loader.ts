@@ -9,7 +9,7 @@ export const customLoader = ({
   quality?: number 
 }) => {
   // If the image is already a full URL from our backend
-  if (src.startsWith('http://backend:3001/') || src.startsWith('http://localhost:3001/')) {
+  if (src.startsWith('http://backend:3000/') || src.startsWith('http://localhost:3000/')) {
     // Check if the backend supports image optimization with query parameters
     // If your backend supports resizing via query params, use:
     return `${src}?width=${width}&quality=${quality}`
@@ -20,6 +20,6 @@ export const customLoader = ({
   
   // For relative paths, construct the full URL with optimization parameters
   // Assuming your backend supports resizing via query parameters
-  const baseUrl = 'http://backend:3001';
+  const baseUrl = 'http://backend:3000';
   return `${baseUrl}${src}?width=${width}&quality=${quality}`;
 }

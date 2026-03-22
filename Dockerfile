@@ -1,9 +1,9 @@
-FROM node:18-alpine
+FROM node:20
 
 WORKDIR /usr/src/app
 
 # First copy only package files for better caching
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json* ./
 
 # Install dependencies including devDependencies
 RUN npm install --force --include=dev
