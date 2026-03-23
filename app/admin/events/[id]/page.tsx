@@ -96,7 +96,10 @@ useEffect(() => {
       const formattedData = {
         ...editableData,
         start_date: editableData.start_date ? new Date(editableData.start_date).toISOString().split('T')[0] : '',
-        ticket_deadline: editableData.ticket_deadline ? new Date(editableData.ticket_deadline).toISOString() : ''
+        // HIER ÄNDERN: Direkt beim Laden aus der DB in Manila-Zeit umwandeln
+        ticket_deadline: editableData.ticket_deadline 
+          ? new Date(editableData.ticket_deadline).toLocaleString('sv-SE', { timeZone: process.env.NEXT_PUBLIC_EVENT_TZ || 'Asia/Manila' }).replace(' ', 'T').slice(0, 16) 
+          : ''
       };
       
       setFormData(formattedData);
@@ -140,11 +143,13 @@ useEffect(() => {
 
     // Only add fields that have been changed from the original event data
     Object.entries(formData).forEach(([key, value]) => {
-      // Skip if value hasn't changed from original event
       if (event && value !== event[key as keyof Event]) {
         if (value !== null && value !== undefined) {
-          // Convert empty strings to null for numeric fields that can be null
-          if ((key === 'bundle_size' || key === 'ticket_price_bundle') && value === '') {
+          // Spezialbehandlung für Datumsfelder
+          if (key === 'ticket_deadline' && value) {
+            const tzOffset = process.env.NEXT_PUBLIC_EVENT_TZ_OFFSET || '+08:00';
+            formDataToSend.append(key, `${value}:00${tzOffset}`);
+          } else if ((key === 'bundle_size' || key === 'ticket_price_bundle') && value === '') {
             formDataToSend.append(key, 'null');
           } else {
             formDataToSend.append(key, value.toString());
@@ -180,7 +185,15 @@ useEffect(() => {
 
     // Update form data but exclude read-only fields
     const { id, sold_tickets, walk_in_cash_count, walk_in_gcash_count, ...editableData } = updatedEvent;
-    setFormData(editableData);
+    
+    // HIER ÄNDERN: Auch nach dem Update formatieren
+    setFormData({
+      ...editableData,
+      start_date: editableData.start_date ? new Date(editableData.start_date).toISOString().split('T')[0] : '',
+      ticket_deadline: editableData.ticket_deadline 
+        ? new Date(editableData.ticket_deadline).toLocaleString('sv-SE', { timeZone: process.env.NEXT_PUBLIC_EVENT_TZ || 'Asia/Manila' }).replace(' ', 'T').slice(0, 16) 
+        : ''
+    });
 
     setSuccess('Event updated successfully!');
     setPosterFile(null);
@@ -235,7 +248,15 @@ useEffect(() => {
 
       // Update form data but exclude read-only fields
       const { id, sold_tickets, walk_in_cash_count, walk_in_gcash_count, ...editableData } = updatedEvent;
-      setFormData(editableData);
+      
+      // HIER ÄNDERN: Auch hier formatieren
+      setFormData({
+        ...editableData,
+        start_date: editableData.start_date ? new Date(editableData.start_date).toISOString().split('T')[0] : '',
+        ticket_deadline: editableData.ticket_deadline 
+          ? new Date(editableData.ticket_deadline).toLocaleString('sv-SE', { timeZone: process.env.NEXT_PUBLIC_EVENT_TZ || 'Asia/Manila' }).replace(' ', 'T').slice(0, 16) 
+          : ''
+      });
 
       setSuccess(`Event ${updatedEvent.is_active ? 'activated' : 'deactivated'} successfully!`);
 
@@ -554,7 +575,7 @@ useEffect(() => {
                   <input
                     type="datetime-local"
                     name="ticket_deadline"
-                    value={formData.ticket_deadline ? new Date(formData.ticket_deadline).toISOString().slice(0, 16) : ''}
+                    value={formData.ticket_deadline || ''}
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-black"
