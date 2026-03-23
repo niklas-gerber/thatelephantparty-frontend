@@ -27,7 +27,7 @@ interface FormErrors {
   reference_number?: string
   attendees?: string[]
   payslip?: string
-  general?: string
+  general?: React.ReactNode // <--- Hier geändert!
 }
 
 export default function TicketPurchasePage() {
@@ -291,7 +291,15 @@ export default function TicketPurchasePage() {
         } else if (errorMessage.includes('Reference number already used') || errorMessage.includes('Duplicate reference')) {
           parsedErrors.reference_number = 'This reference number has already been used for this event'
         } else if (errorMessage.includes('Event is not active')) {
-          parsedErrors.general = 'This event is no longer active'
+          parsedErrors.general = (
+            <span>
+              This event's ticketing deadline was met - Don't worry, if you payed already through GCash please{' '}
+              <Link href="/contact" className="underline font-slimbold hover:text-[#45B8E5]">
+                contact us
+              </Link>
+              , we will give you a ticket.
+            </span>
+          )
         } else if (errorMessage.includes('tickets left') || errorMessage.includes('sold out')) {
           parsedErrors.general = errorMessage
         } else if (errorMessage.includes('attendees') || errorMessage.includes('Attendees')) {
