@@ -400,19 +400,18 @@ const addAttendee = () => {
 
                 // Add form fields
                 formDataToSend.append('buyer_name', formData.buyer_name);
+                formDataToSend.append('quantity', formData.attendees.length.toString());
                 formDataToSend.append('phone', formData.phone);
                 formDataToSend.append('email', formData.email);
                 formDataToSend.append('reference_number', formData.reference_number);
                 formDataToSend.append('total_price', formData.total_price.toString());
 
-                // Add attendees in multipart format: attendees[0][name], attendees[1][name], etc.
-                formData.attendees.forEach((attendee, index) => {
-                    formDataToSend.append(`attendees[${index}][name]`, attendee.name);
-                });
-
+                // Sende attendees als JSON-String
+                formDataToSend.append('attendees', JSON.stringify(formData.attendees));
                 // Add payslip file if provided
+                
                 if (payslipFile) {
-                    formDataToSend.append('payslip', payslipFile);
+                    formDataToSend.append('file', payslipFile);
                 }
 
                 const response = await authFetch(`/admin/tickets/${editingTicketId}`, {
@@ -462,17 +461,16 @@ const addAttendee = () => {
                 const formDataToSend = new FormData();
                 formDataToSend.append('event_id', eventId);
                 formDataToSend.append('buyer_name', formData.buyer_name);
+                formDataToSend.append('quantity', formData.attendees.length.toString()); // quantity hinzufügen
                 formDataToSend.append('phone', formData.phone);
                 formDataToSend.append('email', formData.email);
                 formDataToSend.append('reference_number', formData.reference_number);
                 formDataToSend.append('total_price', formData.total_price.toString());
 
-                // Add attendees in multipart format: attendees[0][name], attendees[1][name], etc.
-                formData.attendees.forEach((attendee, index) => {
-                    formDataToSend.append(`attendees[${index}][name]`, attendee.name);
-                });
+                // Sende attendees als JSON-String, da das Backend dies explizit unterstützt
+                formDataToSend.append('attendees', JSON.stringify(formData.attendees));
 
-                formDataToSend.append('payslip', payslipFile);
+                formDataToSend.append('file', payslipFile);
 
                 const response = await authFetch('/admin/tickets', {
                     method: 'POST',

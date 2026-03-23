@@ -46,7 +46,7 @@ export default function NewEventPage() {
     const fetchLatestEvent = async () => {
       try {
         setIsLoading(true);
-        const response = await authFetch('/api/v1/admin/events');
+        const response = await authFetch('/admin/events');
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -118,7 +118,7 @@ formDataToSend.append('inactive_message', latestEvent?.inactive_message || 'This
       formDataToSend.append('file', file);
     }
 
-    const response = await authFetch('/api/v1/admin/events', {
+    const response = await authFetch('/admin/events', {
       method: 'POST',
       body: formDataToSend,
     });
