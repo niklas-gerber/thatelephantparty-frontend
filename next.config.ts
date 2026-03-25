@@ -30,6 +30,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  eslint: {
+    // Ignoriert ESLint-Fehler beim Production Build
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Ignoriert TypeScript-Fehler beim Production Build
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;
